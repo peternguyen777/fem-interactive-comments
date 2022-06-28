@@ -27,7 +27,7 @@ export default function Home() {
         <link rel='icon' href='/images/favicon-32x32.png' />
       </Head>
 
-      <main className='mx-4 mt-8 max-w-[730px] md:mx-auto md:mt-16'>
+      <main className='mx-4 my-8 max-w-[730px] md:mx-auto md:mt-16'>
         {/* Comments Section */}
         {comments.map((comment) => {
           return (
