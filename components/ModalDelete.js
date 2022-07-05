@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import styles from "./ModalDelete.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { modalActions } from "../store/modal";
 
@@ -13,17 +12,12 @@ export default function ModalDelete() {
     setIsBrowser(true);
   }, []);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const handleClose = (e) => {
-    e.preventDefault();
     dispatch(modalActions.modalOff());
   };
 
   const modalContent = showModal ? (
-    <div className='absolute top-0 left-0 flex h-full w-full items-center justify-center p-4'>
+    <div className='absolute top-0 left-0 flex h-screen w-full items-center justify-center p-4'>
       <div className='z-20 w-full rounded-lg bg-white px-7 py-6'>
         <h2>Delete comment</h2>
         <h4 className='mt-4'>
@@ -50,7 +44,7 @@ export default function ModalDelete() {
 
   const underlayContent = showModal ? (
     <div
-      className='absolute top-0 left-0 z-10 flex h-full w-full bg-black opacity-50'
+      className='fixed top-0 h-full w-full bg-black opacity-50'
       onClick={handleClose}
     ></div>
   ) : null;
