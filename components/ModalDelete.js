@@ -13,6 +13,10 @@ export default function ModalDelete() {
     setIsBrowser(true);
   }, []);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const handleClose = (e) => {
     e.preventDefault();
     dispatch(modalActions.modalOff());
@@ -26,15 +30,15 @@ export default function ModalDelete() {
           Are you sure you want to delete this comment? This will remove the
           comment and can’t be undone.
         </h4>
-        <div className='mt-4 flex justify-between'>
+        <div className='mt-4 flex space-x-3'>
           <button
-            className='h-[48px] w-[138px] rounded-lg bg-grayblue transition duration-100 hover:opacity-50'
+            className='h-[48px] flex-1 rounded-lg bg-grayblue transition duration-100 hover:opacity-50'
             onClick={handleClose}
           >
             <h5 className='py-[12px] text-base text-white'>NO, CANCEL</h5>
           </button>
           <button
-            className='h-[48px] w-[138px] rounded-lg bg-softred transition duration-100 hover:opacity-50'
+            className='h-[48px] flex-1 rounded-lg bg-softred transition duration-100 hover:opacity-50'
             onClick={handleClose}
           >
             <h5 className='py-[12px] text-base text-white'>YES, DELETE</h5>
@@ -46,7 +50,7 @@ export default function ModalDelete() {
 
   const underlayContent = showModal ? (
     <div
-      className='absolute top-0 left-0 z-10 flex h-screen w-full bg-black opacity-50'
+      className='absolute top-0 left-0 z-10 flex h-full w-full bg-black opacity-50'
       onClick={handleClose}
     ></div>
   ) : null;
