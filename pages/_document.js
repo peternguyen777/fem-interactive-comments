@@ -18,7 +18,8 @@ class MyDocument extends Document {
         </Head>
         <body>
           <Main />
-          <div id='overlayer' />
+          <div id='modal-root' />
+          <div id='underlay-root' />
           <NextScript />
         </body>
       </Html>

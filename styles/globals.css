@@ -7,6 +7,10 @@
     @apply font-rubik font-bold;
   }
 
+  h2 {
+    @apply font-rubik text-[20px] font-medium leading-[24px] text-darkblue;
+  }
+
   h3 {
     @apply font-rubik text-base font-medium text-darkblue;
   }
