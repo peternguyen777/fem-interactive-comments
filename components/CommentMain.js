@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import CommentReply from "./CommentReply";
 import LikesBar from "./LikesBar";
 import LikesBarVert from "./LikesBarVert";
 import ButtonDeleteEdit from "./ButtonDeleteEdit";
 import ButtonReply from "./ButtonReply";
+import Reply from "./Reply";
 
 const CommentMain = (props) => {
+  const [commentOpen, setCommentOpen] = useState(false);
+
   const origImagePath = props.comment.user.image.png;
   const imagePath = origImagePath.substring(1);
+
+  const replyClickHandler = () => {
+    setCommentOpen(!commentOpen);
+  };
 
   return (
     <div className='mb-4'>
@@ -34,7 +41,7 @@ const CommentMain = (props) => {
               {props.currentUser.username === props.comment.user.username ? (
                 <ButtonDeleteEdit />
               ) : (
-                <ButtonReply />
+                <ButtonReply onClick={replyClickHandler} />
               )}
             </div>
           </div>
@@ -45,12 +52,17 @@ const CommentMain = (props) => {
             {props.currentUser.username === props.comment.user.username ? (
               <ButtonDeleteEdit />
             ) : (
-              <ButtonReply />
+              <ButtonReply onClick={replyClickHandler} />
             )}
           </div>
         </div>
       </div>
-
+      {commentOpen && (
+        <Reply
+          currentUser={props.currentUser}
+          replyUser={props.comment.user.username}
+        />
+      )}
       {/* Comment Replies */}
       {props.comment.replies.length > 0 && (
         <div className='border-l-2 border-lightgray md:ml-[44px]'>

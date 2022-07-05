@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import ButtonDeleteEdit from "./ButtonDeleteEdit";
 import ButtonReply from "./ButtonReply";
 import LikesBar from "./LikesBar";
 import LikesBarVert from "./LikesBarVert";
+import Reply from "./Reply";
 
 const CommentReply = (props) => {
+  const [commentOpen, setCommentOpen] = useState(false);
+
   const origImagePath = props.reply.user.image.png;
   const imagePath = origImagePath.substring(1);
+
+  const replyClickHandler = () => {
+    setCommentOpen(!commentOpen);
+  };
 
   return (
     <div className='mt-4 pl-4 md:pl-[44px]'>
@@ -32,7 +39,7 @@ const CommentReply = (props) => {
               {props.currentUser.username === props.reply.user.username ? (
                 <ButtonDeleteEdit />
               ) : (
-                <ButtonReply />
+                <ButtonReply onClick={replyClickHandler} />
               )}
             </div>
           </div>
@@ -48,11 +55,17 @@ const CommentReply = (props) => {
             {props.currentUser.username === props.reply.user.username ? (
               <ButtonDeleteEdit />
             ) : (
-              <ButtonReply />
+              <ButtonReply onClick={replyClickHandler} />
             )}
           </div>
         </div>
       </div>
+      {commentOpen && (
+        <Reply
+          currentUser={props.currentUser}
+          replyUser={props.reply.user.username}
+        />
+      )}
     </div>
   );
 };
