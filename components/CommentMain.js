@@ -22,7 +22,7 @@ const CommentMain = (props) => {
       {/* Main Comment */}
       <div className='rounded-lg bg-white p-4 md:flex md:space-x-6 md:p-6'>
         <LikesBarVert comment={props.comment} type={`comment`} />
-        <div className='w-full space-y-4'>
+        <div className='w-full space-y-4 overflow-x-auto'>
           <div className='flex justify-between'>
             <div className='flex items-center space-x-4'>
               <Image src={imagePath} alt='' width={32} height={32} />
@@ -45,7 +45,7 @@ const CommentMain = (props) => {
               )}
             </div>
           </div>
-          <h4>{props.comment.content}</h4>
+          <h4 className='break-words'>{props.comment.content}</h4>
 
           <div className='flex items-center justify-between md:hidden'>
             <LikesBar comment={props.comment} type={`comment`} />
