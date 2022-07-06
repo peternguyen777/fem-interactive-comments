@@ -3,11 +3,12 @@ import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { modalActions } from "../store/modal";
 
-const ButtonDeleteEdit = () => {
+const ButtonDeleteEdit = (props) => {
   const dispatch = useDispatch();
 
   const deleteHandler = () => {
     dispatch(modalActions.modalOn());
+    dispatch(modalActions.deleteComment(props.deleteId));
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   };
 

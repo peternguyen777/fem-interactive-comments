@@ -39,7 +39,7 @@ const CommentMain = (props) => {
             </div>
             <div className='hidden md:inline-block'>
               {props.currentUser.username === props.comment.user.username ? (
-                <ButtonDeleteEdit />
+                <ButtonDeleteEdit deleteId={props.comment.id} />
               ) : (
                 <ButtonReply onClick={replyClickHandler} />
               )}

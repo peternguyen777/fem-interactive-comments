@@ -14,7 +14,6 @@ const AddComment = (props) => {
       content: commentRef.current.value,
       createdAt: "just now",
       score: 0,
-      replies: [],
       user: {
         image: {
           png: props.currentUser.image.png,

@@ -3,16 +3,22 @@ import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { modalActions } from "../store/modal";
 
-export default function ModalDelete() {
+export default function ModalDelete(props) {
   const [isBrowser, setIsBrowser] = useState(false);
   const showModal = useSelector((state) => state.showModal);
+  const deleteId = useSelector((state) => state.deleteCommentId);
   const dispatch = useDispatch();
 
   useEffect(() => {
     setIsBrowser(true);
   }, []);
 
-  const handleClose = (e) => {
+  const handleClose = () => {
+    dispatch(modalActions.modalOff());
+  };
+
+  const handleDelete = () => {
+    props.onDeleteComment(deleteId);
     dispatch(modalActions.modalOff());
   };
 
@@ -22,7 +28,7 @@ export default function ModalDelete() {
         <h2 className='text-[24px] leading-[28px]'>Delete comment</h2>
         <h4 className='mt-4 sm:mt-5'>
           Are you sure you want to delete this comment? This will remove the
-          comment and can’t be undone.
+          comment and can't be undone.
         </h4>
         <div className='mt-4 flex space-x-3 sm:mt-5'>
           <button
@@ -33,7 +39,7 @@ export default function ModalDelete() {
           </button>
           <button
             className='h-[48px] flex-1 rounded-lg bg-softred transition duration-100 hover:opacity-50'
-            onClick={handleClose}
+            onClick={handleDelete}
           >
             <h5 className='py-[12px] text-base text-white'>YES, DELETE</h5>
           </button>
