@@ -28,7 +28,7 @@ export default function ModalDelete(props) {
         <h2 className='text-[24px] leading-[28px]'>Delete comment</h2>
         <h4 className='mt-4 sm:mt-5'>
           Are you sure you want to delete this comment? This will remove the
-          comment and can't be undone.
+          comment and can not be undone.
         </h4>
         <div className='mt-4 flex space-x-3 sm:mt-5'>
           <button
