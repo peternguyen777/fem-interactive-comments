@@ -45,7 +45,7 @@ const CommentReply = (props) => {
           </div>
 
           <h4>
-            <span className='font-rubik text-base font-medium text-moderateblue'>
+            <span className='cursor-pointer font-rubik text-base font-medium text-moderateblue'>
               @{props.reply.replyingTo}{" "}
             </span>
             {props.reply.content}
