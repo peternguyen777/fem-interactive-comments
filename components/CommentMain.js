@@ -22,7 +22,7 @@ const CommentMain = (props) => {
       {/* Main Comment */}
       <div className='rounded-lg bg-white p-4 md:flex md:space-x-6 md:p-6'>
         <LikesBarVert comment={props.comment} type={`comment`} />
-        <div className='space-y-4'>
+        <div className='w-full space-y-4'>
           <div className='flex justify-between'>
             <div className='flex items-center space-x-4'>
               <Image src={imagePath} alt='' width={32} height={32} />
@@ -64,7 +64,8 @@ const CommentMain = (props) => {
         />
       )}
       {/* Comment Replies */}
-      {props.comment.replies.length > 0 && (
+
+      {props.comment.hasOwnProperty("replies") && (
         <div className='border-l-2 border-lightgray md:ml-[44px]'>
           {props.comment.replies.map((reply) => {
             return (

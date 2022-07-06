@@ -31,6 +31,10 @@
     @apply w-screen bg-verylightgray;
   }
 
+  svg {
+    @apply cursor-pointer fill-[#C5C6EF] hover:fill-moderateblue;
+  }
+
   *:focus {
     outline: none;
   }

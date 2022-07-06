@@ -7,18 +7,53 @@ import ModalDelete from "../components/ModalDelete";
 export default function Home() {
   const [comments, setComments] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const fetchCommentsHandler = useCallback(async () => {
-    const response = await fetch("/data.json");
-    const data = await response.json();
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(
+        "https://interactive-comments-408e5-default-rtdb.asia-southeast1.firebasedatabase.app/.json"
+      );
 
-    setComments(data.comments);
-    setCurrentUser(data.currentUser);
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+
+      const data = await response.json();
+
+      const ids = Object.keys(data.comments);
+      const commentsArray = Object.values(data.comments);
+      commentsArray.map((item, i) => (item.id = ids[i]));
+
+      setComments(commentsArray);
+      setCurrentUser(data.currentUser);
+    } catch (error) {
+      setError(error.message);
+    }
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
     fetchCommentsHandler();
   }, [fetchCommentsHandler]);
+
+  const addCommentHandler = async (addedComment) => {
+    const response = await fetch(
+      "https://interactive-comments-408e5-default-rtdb.asia-southeast1.firebasedatabase.app/comments.json",
+      {
+        method: "POST",
+        body: JSON.stringify(addedComment),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    fetchCommentsHandler();
+  };
 
   return (
     <div>
@@ -28,23 +63,26 @@ export default function Home() {
         <link rel='icon' href='/images/favicon-32x32.png' />
       </Head>
       <ModalDelete />
-      <main className='mx-4 my-8 max-w-[730px] md:mx-auto md:mt-16'>
-        {/* Comments Section */}
-        {comments.map((comment) => {
-          return (
-            <CommentMain
-              comment={comment}
-              currentUser={currentUser}
-              key={comment.id}
-            />
-          );
-        })}
+      {comments.length > 0 && (
+        <main className='mx-4 my-8 max-w-[730px] md:mx-auto md:mt-16'>
+          {/* Comments Section */}
+          {comments.map((comment) => {
+            return (
+              <CommentMain
+                comment={comment}
+                currentUser={currentUser}
+                key={comment.id}
+              />
+            );
+          })}
 
-        {/* Add Comment */}
-        <AddComment currentUser={currentUser} />
-      </main>
-
-      <footer></footer>
+          {/* Add Comment */}
+          <AddComment
+            currentUser={currentUser}
+            onAddComment={addCommentHandler}
+          />
+        </main>
+      )}
     </div>
   );
 }

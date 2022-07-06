@@ -9,8 +9,8 @@ import Reply from "./Reply";
 const CommentReply = (props) => {
   const [commentOpen, setCommentOpen] = useState(false);
 
-  const origImagePath = props.reply.user.image.png;
-  const imagePath = origImagePath.substring(1);
+  let origPath = props.reply.user.image.png;
+  var imagePath = origPath.substring(1);
 
   const replyClickHandler = () => {
     setCommentOpen(!commentOpen);

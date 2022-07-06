@@ -11,9 +11,21 @@ const LikesBar = (props) => {
   return (
     <div className='flex h-[40px] w-[100px] items-center justify-center rounded-[10px] bg-verylightgray'>
       <div className='flex items-center'>
-        <Image src='/images/icon-plus.svg' alt='' width={11} height={11} />
+        <Image
+          src='/images/icon-plus.svg'
+          alt=''
+          width={11}
+          height={11}
+          className='cursor-pointer'
+        />
         <h5 className='mx-[11px] leading-[18.96px]'>{action}</h5>
-        <Image src='/images/icon-minus.svg' alt='' width={11} height={3} />
+        <Image
+          src='/images/icon-minus.svg'
+          alt=''
+          width={11}
+          height={3}
+          className='cursor-pointer'
+        />
       </div>
     </div>
   );
