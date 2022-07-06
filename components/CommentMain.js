@@ -50,7 +50,7 @@ const CommentMain = (props) => {
           <div className='flex items-center justify-between md:hidden'>
             <LikesBar comment={props.comment} type={`comment`} />
             {props.currentUser.username === props.comment.user.username ? (
-              <ButtonDeleteEdit />
+              <ButtonDeleteEdit deleteId={props.comment.id} />
             ) : (
               <ButtonReply onClick={replyClickHandler} />
             )}
