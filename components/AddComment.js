@@ -10,20 +10,22 @@ const AddComment = (props) => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    const addedComment = {
-      content: commentRef.current.value,
-      createdAt: "just now",
-      score: 0,
-      user: {
-        image: {
-          png: props.currentUser.image.png,
-          webp: props.currentUser.image.webp,
+    if (commentRef.current.value.length > 0) {
+      const addedComment = {
+        content: commentRef.current.value,
+        createdAt: "just now",
+        score: 0,
+        user: {
+          image: {
+            png: props.currentUser.image.png,
+            webp: props.currentUser.image.webp,
+          },
+          username: props.currentUser.username,
         },
-        username: props.currentUser.username,
-      },
-    };
-    props.onAddComment(addedComment);
-    commentRef.current.value = "";
+      };
+      props.onAddComment(addedComment);
+      commentRef.current.value = "";
+    }
   };
 
   return (
@@ -37,7 +39,7 @@ const AddComment = (props) => {
           onSubmit={submitHandler}
         >
           <textarea
-            className='w-full cursor-pointer resize-none rounded-lg border border-lightgray px-6 pt-3 pb-[60px] font-rubik text-base font-normal text-darkblue placeholder:text-grayblue focus:border-moderateblue focus:ring-1 focus:ring-moderateblue'
+            className='block w-full cursor-pointer resize-none rounded-lg border border-lightgray px-6 pt-3 pb-[60px] font-rubik text-base font-normal text-darkblue placeholder:text-grayblue focus:border-moderateblue focus:ring-1 focus:ring-moderateblue'
             placeholder='Add a comment...'
             rows='1'
             type='text'

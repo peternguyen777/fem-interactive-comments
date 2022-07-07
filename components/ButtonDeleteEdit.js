@@ -8,8 +8,13 @@ const ButtonDeleteEdit = (props) => {
 
   const deleteHandler = () => {
     dispatch(modalActions.modalOn());
-    dispatch(modalActions.deleteComment(props.deleteId));
+    dispatch(modalActions.deleteComment(props.commentId));
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  };
+
+  const editHandler = () => {
+    dispatch(modalActions.editComment(props.commentId));
+    props.onEditClick();
   };
 
   return (
@@ -21,7 +26,10 @@ const ButtonDeleteEdit = (props) => {
         <Image src='/images/icon-delete.svg' alt='' width={12} height={14} />
         <h6>Delete</h6>
       </div>
-      <div className='flex cursor-pointer items-center space-x-2 transition duration-100 hover:opacity-50'>
+      <div
+        className='flex cursor-pointer items-center space-x-2 transition duration-100 hover:opacity-50'
+        onClick={editHandler}
+      >
         <Image src='/images/icon-edit.svg' alt='' width={14} height={14} />
         <h5>Edit</h5>
       </div>

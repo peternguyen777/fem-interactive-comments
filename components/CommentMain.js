@@ -6,15 +6,29 @@ import LikesBarVert from "./LikesBarVert";
 import ButtonDeleteEdit from "./ButtonDeleteEdit";
 import ButtonReply from "./ButtonReply";
 import Reply from "./Reply";
+import Edit from "./Edit";
+import { useDispatch, useSelector } from "react-redux";
 
 const CommentMain = (props) => {
   const [commentOpen, setCommentOpen] = useState(false);
+  const [commentEdit, setCommentEdit] = useState(false);
+  const editId = useSelector((state) => state.editCommentId);
+  const dispatch = useDispatch();
 
   const origImagePath = props.comment.user.image.png;
   const imagePath = origImagePath.substring(1);
 
   const replyClickHandler = () => {
     setCommentOpen(!commentOpen);
+  };
+
+  const editClickHandler = () => {
+    setCommentEdit(!commentEdit);
+  };
+
+  const handleUpdate = (updatedComment) => {
+    props.onEditComment(editId, updatedComment);
+    setCommentEdit(false);
   };
 
   return (
@@ -39,18 +53,32 @@ const CommentMain = (props) => {
             </div>
             <div className='hidden md:inline-block'>
               {props.currentUser.username === props.comment.user.username ? (
-                <ButtonDeleteEdit deleteId={props.comment.id} />
+                <ButtonDeleteEdit
+                  commentId={props.comment.id}
+                  onEditClick={editClickHandler}
+                />
               ) : (
                 <ButtonReply onClick={replyClickHandler} />
               )}
             </div>
           </div>
-          <h4 className='break-words'>{props.comment.content}</h4>
+          {commentEdit ? (
+            <Edit
+              content={props.comment.content}
+              editId={props.comment.id}
+              onUpdateClick={handleUpdate}
+            />
+          ) : (
+            <h4 className='break-words'>{props.comment.content}</h4>
+          )}
 
           <div className='flex items-center justify-between md:hidden'>
             <LikesBar comment={props.comment} type={`comment`} />
             {props.currentUser.username === props.comment.user.username ? (
-              <ButtonDeleteEdit deleteId={props.comment.id} />
+              <ButtonDeleteEdit
+                commentId={props.comment.id}
+                onEditClick={editClickHandler}
+              />
             ) : (
               <ButtonReply onClick={replyClickHandler} />
             )}

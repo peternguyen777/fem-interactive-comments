@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   showModal: false,
   deleteCommentId: "",
+  editCommentId: "",
 };
 
 const modalDisplaySlice = createSlice({
@@ -19,6 +20,9 @@ const modalDisplaySlice = createSlice({
     },
     deleteComment(state, action) {
       state.deleteCommentId = action.payload;
+    },
+    editComment(state, action) {
+      state.editCommentId = action.payload;
     },
   },
 });
