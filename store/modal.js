@@ -4,6 +4,7 @@ const initialState = {
   showModal: false,
   deleteCommentId: "",
   editCommentId: "",
+  updateScoreId: "",
 };
 
 const modalDisplaySlice = createSlice({
@@ -23,6 +24,9 @@ const modalDisplaySlice = createSlice({
     },
     editComment(state, action) {
       state.editCommentId = action.payload;
+    },
+    updateScore(state, action) {
+      state.updateScoreId = action.payload;
     },
   },
 });

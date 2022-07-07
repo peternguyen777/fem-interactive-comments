@@ -70,6 +70,7 @@ export default function Home() {
 
   const updateCommentHandler = async (id, updatedComment) => {
     console.log("Updating comment of id: " + id);
+
     const response = await fetch(
       "https://interactive-comments-408e5-default-rtdb.asia-southeast1.firebasedatabase.app/comments/" +
         id +
@@ -104,6 +105,7 @@ export default function Home() {
                 currentUser={currentUser}
                 key={comment.id}
                 onEditComment={updateCommentHandler}
+                onFetchComments={fetchCommentsHandler}
               />
             );
           })}

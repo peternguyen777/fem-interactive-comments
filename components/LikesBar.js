@@ -8,6 +8,24 @@ const LikesBar = (props) => {
     var action = props.reply.score;
   }
 
+  const clickAddHandler = () => {
+    const updatedScore = {
+      score: action + 1,
+    };
+
+    props.onUpdateScore(props.scoreId, updatedScore);
+    console.log("added score");
+  };
+
+  const clickMinusHandler = () => {
+    const updatedScore = {
+      score: action - 1,
+    };
+
+    props.onUpdateScore(props.scoreId, updatedScore);
+    console.log("minussed score");
+  };
+
   return (
     <div className='flex h-[40px] w-[100px] items-center justify-center rounded-[10px] bg-verylightgray'>
       <div className='flex items-center'>
@@ -17,6 +35,7 @@ const LikesBar = (props) => {
           width={11}
           height={11}
           className='cursor-pointer'
+          onClick={clickAddHandler}
         />
         <h5 className='mx-[11px] leading-[18.96px]'>{action}</h5>
         <Image
@@ -25,6 +44,7 @@ const LikesBar = (props) => {
           width={11}
           height={3}
           className='cursor-pointer'
+          onClick={clickMinusHandler}
         />
       </div>
     </div>

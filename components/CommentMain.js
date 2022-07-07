@@ -7,13 +7,13 @@ import ButtonDeleteEdit from "./ButtonDeleteEdit";
 import ButtonReply from "./ButtonReply";
 import Reply from "./Reply";
 import Edit from "./Edit";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const CommentMain = (props) => {
   const [commentOpen, setCommentOpen] = useState(false);
   const [commentEdit, setCommentEdit] = useState(false);
+
   const editId = useSelector((state) => state.editCommentId);
-  const dispatch = useDispatch();
 
   const origImagePath = props.comment.user.image.png;
   const imagePath = origImagePath.substring(1);
@@ -26,16 +26,49 @@ const CommentMain = (props) => {
     setCommentEdit(!commentEdit);
   };
 
-  const handleUpdate = (updatedComment) => {
+  const handleUpdateComment = (updatedComment) => {
     props.onEditComment(editId, updatedComment);
     setCommentEdit(false);
+  };
+
+  const handleUpdateScore = (scoreId, updatedScore) => {
+    props.onUpdateScore(scoreId, updatedScore);
+  };
+
+  const updateScoreHandler = async (scoreId, updatedScore) => {
+    console.log(
+      "Updating comment of id: " +
+        scoreId +
+        ". Updated score: " +
+        updatedScore.score
+    );
+
+    const response = await fetch(
+      "https://interactive-comments-408e5-default-rtdb.asia-southeast1.firebasedatabase.app/comments/" +
+        scoreId +
+        ".json",
+      {
+        method: "PATCH",
+        body: JSON.stringify(updatedScore),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    props.onFetchComments();
   };
 
   return (
     <div className='mb-4'>
       {/* Main Comment */}
       <div className='rounded-lg bg-white p-4 md:flex md:space-x-6 md:p-6'>
-        <LikesBarVert comment={props.comment} type={`comment`} />
+        <LikesBarVert
+          comment={props.comment}
+          type={`comment`}
+          onUpdateScore={updateScoreHandler}
+          scoreId={props.comment.id}
+        />
         <div className='w-full space-y-4 overflow-x-auto'>
           <div className='flex justify-between'>
             <div className='flex items-center space-x-4'>
@@ -65,15 +98,19 @@ const CommentMain = (props) => {
           {commentEdit ? (
             <Edit
               content={props.comment.content}
-              editId={props.comment.id}
-              onUpdateClick={handleUpdate}
+              onUpdateClick={handleUpdateComment}
             />
           ) : (
             <h4 className='break-words'>{props.comment.content}</h4>
           )}
 
           <div className='flex items-center justify-between md:hidden'>
-            <LikesBar comment={props.comment} type={`comment`} />
+            <LikesBar
+              comment={props.comment}
+              type={`comment`}
+              onUpdateScore={updateScoreHandler}
+              scoreId={props.comment.id}
+            />
             {props.currentUser.username === props.comment.user.username ? (
               <ButtonDeleteEdit
                 commentId={props.comment.id}

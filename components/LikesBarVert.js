@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 
 const LikesBarVert = (props) => {
@@ -7,6 +7,24 @@ const LikesBarVert = (props) => {
   } else if (props.type === "reply") {
     var action = props.reply.score;
   }
+
+  const clickAddHandler = () => {
+    const updatedScore = {
+      score: action + 1,
+    };
+
+    props.onUpdateScore(props.scoreId, updatedScore);
+    console.log("added score");
+  };
+
+  const clickMinusHandler = () => {
+    const updatedScore = {
+      score: action - 1,
+    };
+
+    props.onUpdateScore(props.scoreId, updatedScore);
+    console.log("minussed score");
+  };
 
   return (
     <div className='hidden h-[100px] rounded-[10px] bg-verylightgray md:flex'>
@@ -17,6 +35,7 @@ const LikesBarVert = (props) => {
           width={11}
           height={11}
           className='cursor-pointer'
+          onClick={clickAddHandler}
         />
         <h5 className='leading-[19px] md:mt-[19px] md:mb-[21px]'>{action}</h5>
         <Image
@@ -25,6 +44,7 @@ const LikesBarVert = (props) => {
           width={11}
           height={3}
           className='cursor-pointer'
+          onClick={clickMinusHandler}
         />
       </div>
     </div>
