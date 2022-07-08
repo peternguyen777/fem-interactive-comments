@@ -31,10 +31,6 @@ const CommentMain = (props) => {
     setCommentEdit(false);
   };
 
-  const handleUpdateScore = (scoreId, updatedScore) => {
-    props.onUpdateScore(scoreId, updatedScore);
-  };
-
   const addCommentReplyHandler = async (replyId, addedCommentReply) => {
     console.log("Updating comment of id: " + replyId);
     const response = await fetch(
@@ -51,6 +47,7 @@ const CommentMain = (props) => {
     );
 
     props.onFetchComments();
+    setCommentOpen(false);
   };
 
   const updateScoreHandler = async (scoreId, updatedScore) => {
@@ -144,7 +141,7 @@ const CommentMain = (props) => {
         <Reply
           currentUser={props.currentUser}
           replyUser={props.comment.user.username}
-          replyId={props.comment.id}
+          commentId={props.comment.id}
           onAddCommentReply={addCommentReplyHandler}
         />
       )}
@@ -157,7 +154,9 @@ const CommentMain = (props) => {
               <CommentReply
                 key={reply.id}
                 reply={reply}
+                commentId={props.comment.id}
                 currentUser={props.currentUser}
+                onFetchComments={props.onFetchComments}
               />
             );
           })}

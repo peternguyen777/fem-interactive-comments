@@ -6,7 +6,8 @@ import { modalActions } from "../store/modal";
 export default function ModalDelete(props) {
   const [isBrowser, setIsBrowser] = useState(false);
   const showModal = useSelector((state) => state.showModal);
-  const deleteId = useSelector((state) => state.deleteCommentId);
+  const deleteCommentId = useSelector((state) => state.deleteCommentId);
+  const deleteReplyId = useSelector((state) => state.deleteReplyId);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,7 +19,12 @@ export default function ModalDelete(props) {
   };
 
   const handleDelete = () => {
-    props.onDeleteComment(deleteId);
+    if (deleteReplyId === "undefined") {
+      props.onDeleteComment(deleteCommentId);
+    } else {
+      props.onDeleteReply(deleteCommentId, deleteReplyId);
+    }
+
     dispatch(modalActions.modalOff());
   };
 

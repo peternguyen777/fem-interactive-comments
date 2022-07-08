@@ -5,6 +5,7 @@ const initialState = {
   deleteCommentId: "",
   editCommentId: "",
   updateScoreId: "",
+  deleteReplyId: "",
 };
 
 const modalDisplaySlice = createSlice({
@@ -14,10 +15,12 @@ const modalDisplaySlice = createSlice({
     modalOn(state) {
       state.showModal = true;
       state.deleteCommentId = "";
+      state.deleteReplyId = "";
     },
     modalOff(state) {
       state.showModal = false;
       state.deleteCommentId = "";
+      state.deleteReplyId = "";
     },
     deleteComment(state, action) {
       state.deleteCommentId = action.payload;
@@ -27,6 +30,9 @@ const modalDisplaySlice = createSlice({
     },
     updateScore(state, action) {
       state.updateScoreId = action.payload;
+    },
+    deleteReply(state, action) {
+      state.deleteReplyId = action.payload;
     },
   },
 });

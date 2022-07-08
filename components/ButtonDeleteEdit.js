@@ -9,6 +9,13 @@ const ButtonDeleteEdit = (props) => {
   const deleteHandler = () => {
     dispatch(modalActions.modalOn());
     dispatch(modalActions.deleteComment(props.commentId));
+
+    if (typeof props.replyId === "undefined") {
+      dispatch(modalActions.deleteReply("undefined"));
+    } else if (typeof props.replyId !== "undefined") {
+      dispatch(modalActions.deleteReply(props.replyId));
+    }
+
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   };
 

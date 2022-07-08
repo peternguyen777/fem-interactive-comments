@@ -12,15 +12,15 @@ const Reply = (props) => {
 
     let replyString = commentReplyRef.current.value;
     let remText = replyString.replace(/\s/g, "");
-    let replyLength = remText.substring(1).length;
+    let replyLength = remText.length;
 
-    if (replyLength - props.replyUser.length > 0) {
+    if (replyLength > 0) {
       const replyComment = {
         content: commentReplyRef.current.value,
         createdAt: "just now",
         score: 0,
-        id: Math.floor(Math.random() * 1000000),
-        replyingTo: "Roger",
+        // id: Math.floor(Math.random() * 1000000),
+        replyingTo: props.replyUser,
         user: {
           image: {
             png: props.currentUser.image.png,
@@ -29,8 +29,8 @@ const Reply = (props) => {
           username: props.currentUser.username,
         },
       };
-      console.log(replyComment);
-      props.onAddCommentReply(props.replyId, replyComment);
+
+      props.onAddCommentReply(props.commentId, replyComment);
     }
   };
 

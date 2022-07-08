@@ -12,8 +12,44 @@ const CommentReply = (props) => {
   let origPath = props.reply.user.image.png;
   var imagePath = origPath.substring(1);
 
+  //parse comment for highlighting
+  const strReplyingTo = props.reply.replyingTo;
+
+  var strReplyToStart = props.reply.content.substring(
+    1,
+    strReplyingTo.length + 1
+  );
+
+  if (strReplyingTo === strReplyToStart) {
+    strReplyToStart = `@${strReplyingTo} `;
+    var strReplyToEnd = props.reply.content.substring(strReplyingTo.length + 1);
+  } else {
+    strReplyToStart = "";
+    var strReplyToEnd = props.reply.content;
+  }
+  //parse comment for highlighting
+
   const replyClickHandler = () => {
     setCommentOpen(!commentOpen);
+  };
+
+  const addReplyToReplyHandler = async (commentId, addedCommentReply) => {
+    console.log("Updating comment of id: " + commentId);
+    const response = await fetch(
+      "https://interactive-comments-408e5-default-rtdb.asia-southeast1.firebasedatabase.app/comments/" +
+        commentId +
+        "/replies.json",
+      {
+        method: "POST",
+        body: JSON.stringify(addedCommentReply),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    props.onFetchComments();
+    setCommentOpen(false);
   };
 
   return (
@@ -21,7 +57,7 @@ const CommentReply = (props) => {
       {/* Comment Replies */}
       <div className='rounded-lg bg-white p-4 md:flex md:space-x-6 md:p-6'>
         <LikesBarVert reply={props.reply} type={`reply`} />
-        <div className='space-y-4'>
+        <div className='w-full space-y-4 overflow-x-auto'>
           <div className='flex justify-between'>
             <div className='flex items-center space-x-4'>
               <Image src={imagePath} alt='' width={32} height={32} />
@@ -37,23 +73,30 @@ const CommentReply = (props) => {
             </div>
             <div className='hidden md:inline-block'>
               {props.currentUser.username === props.reply.user.username ? (
-                <ButtonDeleteEdit />
+                <ButtonDeleteEdit
+                  replyId={props.reply.id}
+                  commentId={props.commentId}
+                />
               ) : (
                 <ButtonReply onClick={replyClickHandler} />
               )}
             </div>
           </div>
 
-          <h4>
+          <h4 className='break-words'>
             <span className='cursor-pointer font-rubik text-base font-medium text-moderateblue'>
-              @{props.reply.replyingTo}{" "}
+              {strReplyToStart}
             </span>
-            {props.reply.content}
+
+            {strReplyToEnd}
           </h4>
           <div className='flex items-center justify-between md:hidden'>
             <LikesBar reply={props.reply} type={`reply`} />
             {props.currentUser.username === props.reply.user.username ? (
-              <ButtonDeleteEdit />
+              <ButtonDeleteEdit
+                replyId={props.reply.id}
+                commentId={props.commentId}
+              />
             ) : (
               <ButtonReply onClick={replyClickHandler} />
             )}
@@ -64,6 +107,8 @@ const CommentReply = (props) => {
         <Reply
           currentUser={props.currentUser}
           replyUser={props.reply.user.username}
+          commentId={props.commentId}
+          onAddCommentReply={addReplyToReplyHandler}
         />
       )}
     </div>
