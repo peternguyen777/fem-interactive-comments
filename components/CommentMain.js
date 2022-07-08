@@ -35,6 +35,24 @@ const CommentMain = (props) => {
     props.onUpdateScore(scoreId, updatedScore);
   };
 
+  const addCommentReplyHandler = async (replyId, addedCommentReply) => {
+    console.log("Updating comment of id: " + replyId);
+    const response = await fetch(
+      "https://interactive-comments-408e5-default-rtdb.asia-southeast1.firebasedatabase.app/comments/" +
+        replyId +
+        "/replies.json",
+      {
+        method: "POST",
+        body: JSON.stringify(addedCommentReply),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    props.onFetchComments();
+  };
+
   const updateScoreHandler = async (scoreId, updatedScore) => {
     console.log(
       "Updating comment of id: " +
@@ -126,6 +144,8 @@ const CommentMain = (props) => {
         <Reply
           currentUser={props.currentUser}
           replyUser={props.comment.user.username}
+          replyId={props.comment.id}
+          onAddCommentReply={addCommentReplyHandler}
         />
       )}
       {/* Comment Replies */}

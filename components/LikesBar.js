@@ -14,7 +14,6 @@ const LikesBar = (props) => {
     };
 
     props.onUpdateScore(props.scoreId, updatedScore);
-    console.log("added score");
   };
 
   const clickMinusHandler = () => {
@@ -23,7 +22,6 @@ const LikesBar = (props) => {
     };
 
     props.onUpdateScore(props.scoreId, updatedScore);
-    console.log("minussed score");
   };
 
   return (

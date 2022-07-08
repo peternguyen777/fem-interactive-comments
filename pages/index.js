@@ -26,7 +26,10 @@ export default function Home() {
 
       const ids = Object.keys(data.comments);
       const commentsArray = Object.values(data.comments);
-      commentsArray.map((item, i) => (item.id = ids[i]));
+
+      commentsArray.map((item, i) => {
+        return (item.id = ids[i]);
+      });
 
       setComments(commentsArray);
       setCurrentUser(data.currentUser);

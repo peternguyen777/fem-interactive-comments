@@ -1,9 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 
 const Reply = (props) => {
+  const commentReplyRef = useRef("");
+
   let origPath = props.currentUser.image.png;
   var imagePath = origPath.substring(1);
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+
+    let replyString = commentReplyRef.current.value;
+    let remText = replyString.replace(/\s/g, "");
+    let replyLength = remText.substring(1).length;
+
+    if (replyLength - props.replyUser.length > 0) {
+      const replyComment = {
+        content: commentReplyRef.current.value,
+        createdAt: "just now",
+        score: 0,
+        id: Math.floor(Math.random() * 1000000),
+        replyingTo: "Roger",
+        user: {
+          image: {
+            png: props.currentUser.image.png,
+            webp: props.currentUser.image.webp,
+          },
+          username: props.currentUser.username,
+        },
+      };
+      console.log(replyComment);
+      props.onAddCommentReply(props.replyId, replyComment);
+    }
+  };
 
   return (
     <div className='mt-2 rounded-lg bg-white'>
@@ -11,12 +40,16 @@ const Reply = (props) => {
         <div className='hidden md:inline-block'>
           <Image src={imagePath} alt='' width={32} height={32} />
         </div>
-        <form className='md:flex md:flex-grow md:space-x-4'>
+        <form
+          className='md:flex md:flex-grow md:space-x-4'
+          onSubmit={submitHandler}
+        >
           <textarea
             className='w-full cursor-pointer resize-none rounded-lg border border-lightgray px-6 pt-3 pb-[60px] font-rubik text-base font-normal text-darkblue placeholder:text-grayblue focus:border-moderateblue focus:ring-1 focus:ring-moderateblue'
             rows='1'
             autoFocus
             defaultValue={`@${props.replyUser} `}
+            ref={commentReplyRef}
             onFocus={(e) =>
               e.currentTarget.setSelectionRange(
                 e.currentTarget.value.length,
