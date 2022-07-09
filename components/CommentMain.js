@@ -13,7 +13,8 @@ const CommentMain = (props) => {
   const [commentOpen, setCommentOpen] = useState(false);
   const [commentEdit, setCommentEdit] = useState(false);
 
-  const editId = useSelector((state) => state.editCommentId);
+  const editCommentId = useSelector((state) => state.editCommentId);
+  const currentCommentId = props.comment.id;
 
   const origImagePath = props.comment.user.image.png;
   const imagePath = origImagePath.substring(1);
@@ -26,14 +27,8 @@ const CommentMain = (props) => {
     setCommentEdit(!commentEdit);
   };
 
-  const handleUpdateComment = (updatedComment) => {
-    props.onEditComment(editId, updatedComment);
-    setCommentEdit(false);
-  };
-
   const addCommentReplyHandler = async (replyId, addedCommentReply) => {
-    console.log("Updating comment of id: " + replyId);
-    const response = await fetch(
+    await fetch(
       "https://interactive-comments-408e5-default-rtdb.asia-southeast1.firebasedatabase.app/comments/" +
         replyId +
         "/replies.json",
@@ -50,17 +45,28 @@ const CommentMain = (props) => {
     setCommentOpen(false);
   };
 
-  const updateScoreHandler = async (scoreId, updatedScore) => {
-    console.log(
-      "Updating comment of id: " +
-        scoreId +
-        ". Updated score: " +
-        updatedScore.score
+  const updateCommentHandler = async (updatedComment) => {
+    await fetch(
+      "https://interactive-comments-408e5-default-rtdb.asia-southeast1.firebasedatabase.app/comments/" +
+        editCommentId +
+        ".json",
+      {
+        method: "PATCH",
+        body: JSON.stringify(updatedComment),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
 
-    const response = await fetch(
+    props.onFetchComments();
+    setCommentEdit(false);
+  };
+
+  const updateScoreHandler = async (updatedScore) => {
+    await fetch(
       "https://interactive-comments-408e5-default-rtdb.asia-southeast1.firebasedatabase.app/comments/" +
-        scoreId +
+        currentCommentId +
         ".json",
       {
         method: "PATCH",
@@ -82,7 +88,6 @@ const CommentMain = (props) => {
           comment={props.comment}
           type={`comment`}
           onUpdateScore={updateScoreHandler}
-          scoreId={props.comment.id}
         />
         <div className='w-full space-y-4 overflow-x-auto'>
           <div className='flex justify-between'>
@@ -113,7 +118,7 @@ const CommentMain = (props) => {
           {commentEdit ? (
             <Edit
               content={props.comment.content}
-              onUpdateClick={handleUpdateComment}
+              onUpdateClick={updateCommentHandler}
             />
           ) : (
             <h4 className='break-words'>{props.comment.content}</h4>
@@ -124,7 +129,6 @@ const CommentMain = (props) => {
               comment={props.comment}
               type={`comment`}
               onUpdateScore={updateScoreHandler}
-              scoreId={props.comment.id}
             />
             {props.currentUser.username === props.comment.user.username ? (
               <ButtonDeleteEdit

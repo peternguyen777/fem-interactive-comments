@@ -1,13 +1,22 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import ButtonDeleteEdit from "./ButtonDeleteEdit";
-import ButtonReply from "./ButtonReply";
 import LikesBar from "./LikesBar";
 import LikesBarVert from "./LikesBarVert";
+import ButtonDeleteEdit from "./ButtonDeleteEdit";
+import ButtonReply from "./ButtonReply";
 import Reply from "./Reply";
+import Edit from "./Edit";
+import { useSelector } from "react-redux";
 
 const CommentReply = (props) => {
   const [commentOpen, setCommentOpen] = useState(false);
+  const [commentEdit, setCommentEdit] = useState(false);
+
+  const editCommentId = useSelector((state) => state.editCommentId);
+  const editReplyId = useSelector((state) => state.editReplyId);
+
+  const currentCommentId = props.commentId;
+  const currentReplyId = props.reply.id;
 
   let origPath = props.reply.user.image.png;
   var imagePath = origPath.substring(1);
@@ -33,9 +42,12 @@ const CommentReply = (props) => {
     setCommentOpen(!commentOpen);
   };
 
+  const editClickHandler = () => {
+    setCommentEdit(!commentEdit);
+  };
+
   const addReplyToReplyHandler = async (commentId, addedCommentReply) => {
-    console.log("Updating comment of id: " + commentId);
-    const response = await fetch(
+    await fetch(
       "https://interactive-comments-408e5-default-rtdb.asia-southeast1.firebasedatabase.app/comments/" +
         commentId +
         "/replies.json",
@@ -52,11 +64,54 @@ const CommentReply = (props) => {
     setCommentOpen(false);
   };
 
+  const updateReplyHandler = async (updatedCommentReply) => {
+    await fetch(
+      "https://interactive-comments-408e5-default-rtdb.asia-southeast1.firebasedatabase.app/comments/" +
+        editCommentId +
+        "/replies/" +
+        editReplyId +
+        ".json",
+      {
+        method: "PATCH",
+        body: JSON.stringify(updatedCommentReply),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    props.onFetchComments();
+    setCommentEdit(false);
+  };
+
+  const updateReplyScoreHandler = async (updatedScore) => {
+    await fetch(
+      "https://interactive-comments-408e5-default-rtdb.asia-southeast1.firebasedatabase.app/comments/" +
+        currentCommentId +
+        "/replies/" +
+        currentReplyId +
+        ".json",
+      {
+        method: "PATCH",
+        body: JSON.stringify(updatedScore),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    props.onFetchComments();
+  };
+
   return (
     <div className='mt-4 pl-4 md:pl-[44px]'>
       {/* Comment Replies */}
       <div className='rounded-lg bg-white p-4 md:flex md:space-x-6 md:p-6'>
-        <LikesBarVert reply={props.reply} type={`reply`} />
+        <LikesBarVert
+          reply={props.reply}
+          type={`reply`}
+          onUpdateScore={updateReplyScoreHandler}
+        />
         <div className='w-full space-y-4 overflow-x-auto'>
           <div className='flex justify-between'>
             <div className='flex items-center space-x-4'>
@@ -76,6 +131,7 @@ const CommentReply = (props) => {
                 <ButtonDeleteEdit
                   replyId={props.reply.id}
                   commentId={props.commentId}
+                  onEditClick={editClickHandler}
                 />
               ) : (
                 <ButtonReply onClick={replyClickHandler} />
@@ -83,19 +139,31 @@ const CommentReply = (props) => {
             </div>
           </div>
 
-          <h4 className='break-words'>
-            <span className='cursor-pointer font-rubik text-base font-medium text-moderateblue'>
-              {strReplyToStart}
-            </span>
+          {commentEdit ? (
+            <Edit
+              content={props.reply.content}
+              onUpdateClick={updateReplyHandler}
+            />
+          ) : (
+            <h4 className='break-words'>
+              <span className='cursor-pointer font-rubik text-base font-medium text-moderateblue'>
+                {strReplyToStart}
+              </span>
 
-            {strReplyToEnd}
-          </h4>
+              {strReplyToEnd}
+            </h4>
+          )}
           <div className='flex items-center justify-between md:hidden'>
-            <LikesBar reply={props.reply} type={`reply`} />
+            <LikesBar
+              reply={props.reply}
+              type={`reply`}
+              onUpdateScore={updateReplyScoreHandler}
+            />
             {props.currentUser.username === props.reply.user.username ? (
               <ButtonDeleteEdit
                 replyId={props.reply.id}
                 commentId={props.commentId}
+                onEditClick={editClickHandler}
               />
             ) : (
               <ButtonReply onClick={replyClickHandler} />

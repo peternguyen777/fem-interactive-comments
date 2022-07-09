@@ -21,6 +21,12 @@ const ButtonDeleteEdit = (props) => {
 
   const editHandler = () => {
     dispatch(modalActions.editComment(props.commentId));
+
+    if (typeof props.replyId === "undefined") {
+      dispatch(modalActions.editReply("undefined"));
+    } else if (typeof props.replyId !== "undefined") {
+      dispatch(modalActions.editReply(props.replyId));
+    }
     props.onEditClick();
   };
 

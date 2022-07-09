@@ -6,6 +6,7 @@ const initialState = {
   editCommentId: "",
   updateScoreId: "",
   deleteReplyId: "",
+  editReplyId: "",
 };
 
 const modalDisplaySlice = createSlice({
@@ -33,6 +34,9 @@ const modalDisplaySlice = createSlice({
     },
     deleteReply(state, action) {
       state.deleteReplyId = action.payload;
+    },
+    editReply(state, action) {
+      state.editReplyId = action.payload;
     },
   },
 });

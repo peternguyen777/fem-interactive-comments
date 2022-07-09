@@ -58,7 +58,7 @@ export default function Home() {
   }, [fetchCommentsHandler]);
 
   const addCommentHandler = async (addedComment) => {
-    const response = await fetch(
+    await fetch(
       "https://interactive-comments-408e5-default-rtdb.asia-southeast1.firebasedatabase.app/comments.json",
       {
         method: "POST",
@@ -100,25 +100,6 @@ export default function Home() {
     fetchCommentsHandler();
   };
 
-  const updateCommentHandler = async (id, updatedComment) => {
-    console.log("Updating comment of id: " + id);
-
-    const response = await fetch(
-      "https://interactive-comments-408e5-default-rtdb.asia-southeast1.firebasedatabase.app/comments/" +
-        id +
-        ".json",
-      {
-        method: "PATCH",
-        body: JSON.stringify(updatedComment),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    fetchCommentsHandler();
-  };
-
   return (
     <div>
       <Head>
@@ -139,7 +120,6 @@ export default function Home() {
                 comment={comment}
                 currentUser={currentUser}
                 key={comment.id}
-                onEditComment={updateCommentHandler}
                 onFetchComments={fetchCommentsHandler}
               />
             );
