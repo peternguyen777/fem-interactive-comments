@@ -15,8 +15,6 @@ const ButtonDeleteEdit = (props) => {
     } else if (typeof props.replyId !== "undefined") {
       dispatch(modalActions.deleteReply(props.replyId));
     }
-
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   };
 
   const editHandler = () => {

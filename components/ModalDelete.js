@@ -29,7 +29,7 @@ export default function ModalDelete(props) {
   };
 
   const modalContent = showModal ? (
-    <div className='absolute top-0 left-0 flex h-screen w-full items-center justify-center p-4 sm:p-0'>
+    <div className='fixed top-0 z-10 flex h-screen w-full items-center justify-center p-4 sm:p-0'>
       <div className='z-20 w-full rounded-lg bg-white px-7 py-6 sm:w-[400px] sm:p-8'>
         <h2 className='text-[24px] leading-[28px]'>Delete comment</h2>
         <h4 className='mt-4 sm:mt-5'>
@@ -77,4 +77,8 @@ export default function ModalDelete(props) {
   } else {
     return null;
   }
+}
+
+{
+  /* <div className='absolute top-0 left-0 flex h-screen w-full items-center justify-center p-4 sm:p-0'></div> */
 }
