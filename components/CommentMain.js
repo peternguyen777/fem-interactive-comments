@@ -8,6 +8,10 @@ import ButtonReply from "./ButtonReply";
 import Reply from "./Reply";
 import Edit from "./Edit";
 import { useSelector } from "react-redux";
+import dayjs from "dayjs";
+
+var relativeTime = require("dayjs/plugin/relativeTime");
+dayjs.extend(relativeTime);
 
 const CommentMain = (props) => {
   const [commentOpen, setCommentOpen] = useState(false);
@@ -16,8 +20,9 @@ const CommentMain = (props) => {
   const editCommentId = useSelector((state) => state.editCommentId);
   const currentCommentId = props.comment.id;
 
-  const origImagePath = props.comment.user.image.png;
-  const imagePath = origImagePath.substring(1);
+  const timeAgo = dayjs(props.comment.createdAt).fromNow();
+
+  const imagePath = props.comment.user.image.png;
 
   const replyClickHandler = () => {
     setCommentOpen(!commentOpen);
@@ -102,7 +107,7 @@ const CommentMain = (props) => {
                 )}
               </h3>
 
-              <h4>{props.comment.createdAt}</h4>
+              <h4>{timeAgo}</h4>
             </div>
             <div className='hidden md:inline-block'>
               {props.currentUser.username === props.comment.user.username ? (

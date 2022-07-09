@@ -7,6 +7,10 @@ import ButtonReply from "./ButtonReply";
 import Reply from "./Reply";
 import Edit from "./Edit";
 import { useSelector } from "react-redux";
+import dayjs from "dayjs";
+
+var relativeTime = require("dayjs/plugin/relativeTime");
+dayjs.extend(relativeTime);
 
 const CommentReply = (props) => {
   const [commentOpen, setCommentOpen] = useState(false);
@@ -18,8 +22,9 @@ const CommentReply = (props) => {
   const currentCommentId = props.commentId;
   const currentReplyId = props.reply.id;
 
-  let origPath = props.reply.user.image.png;
-  var imagePath = origPath.substring(1);
+  const timeAgo = dayjs(props.reply.createdAt).fromNow();
+
+  const imagePath = props.reply.user.image.png;
 
   //parse comment for highlighting
   const strReplyingTo = props.reply.replyingTo;
@@ -124,7 +129,7 @@ const CommentReply = (props) => {
                   </span>
                 )}
               </h3>
-              <h4>{props.reply.createdAt}</h4>
+              <h4>{timeAgo}</h4>
             </div>
             <div className='hidden md:inline-block'>
               {props.currentUser.username === props.reply.user.username ? (

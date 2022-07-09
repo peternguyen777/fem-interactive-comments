@@ -4,8 +4,7 @@ import Image from "next/image";
 const Reply = (props) => {
   const commentReplyRef = useRef("");
 
-  let origPath = props.currentUser.image.png;
-  var imagePath = origPath.substring(1);
+  const imagePath = props.currentUser.image.png;
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -14,12 +13,13 @@ const Reply = (props) => {
     let remText = replyString.replace(/\s/g, "");
     let replyLength = remText.length;
 
+    var current = new Date();
+
     if (replyLength > 0) {
       const replyComment = {
         content: commentReplyRef.current.value,
-        createdAt: "just now",
+        createdAt: current,
         score: 0,
-        // id: Math.floor(Math.random() * 1000000),
         replyingTo: props.replyUser,
         user: {
           image: {

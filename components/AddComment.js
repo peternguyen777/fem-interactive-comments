@@ -4,16 +4,17 @@ import { useRef } from "react";
 const AddComment = (props) => {
   const commentRef = useRef("");
 
-  let origPath = props.currentUser.image.png;
-  var imagePath = origPath.substring(1);
+  const imagePath = props.currentUser.image.png;
 
   const submitHandler = (event) => {
     event.preventDefault();
 
+    var current = new Date();
+
     if (commentRef.current.value.length > 0) {
       const addedComment = {
         content: commentRef.current.value,
-        createdAt: "just now",
+        createdAt: current,
         score: 0,
         user: {
           image: {
